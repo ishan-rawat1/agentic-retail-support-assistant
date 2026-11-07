@@ -1,0 +1,62 @@
+### Example API requests (VS Code REST Client / IntelliJ HTTP client format)
+### Demo tokens: demo-alice, demo-bob, demo-carol
+
+### Health (no auth)
+GET http://localhost:8000/api/v1/health
+
+### Who am I
+GET http://localhost:8000/api/v1/me
+Authorization: Bearer demo-alice
+
+### Chat — order lookup (tool route)
+POST http://localhost:8000/api/v1/chat
+Content-Type: application/json
+Authorization: Bearer demo-alice
+
+{"message": "Where is my order ORD-1001?"}
+
+### Chat — follow-up in the same session (replace the session_id)
+POST http://localhost:8000/api/v1/chat
+Content-Type: application/json
+Authorization: Bearer demo-alice
+
+{"message": "Can I return it?", "session_id": "PASTE-SESSION-ID"}
+
+### Chat — RAG policy question
+POST http://localhost:8000/api/v1/chat
+Content-Type: application/json
+Authorization: Bearer demo-bob
+
+{"message": "What is your return policy for electronics?"}
+
+### Create a session explicitly
+POST http://localhost:8000/api/v1/sessions
+Content-Type: application/json
+Authorization: Bearer demo-alice
+
+{"title": "Returns question"}
+
+### List my sessions
+GET http://localhost:8000/api/v1/sessions
+Authorization: Bearer demo-alice
+
+### Conversation history
+GET http://localhost:8000/api/v1/sessions/PASTE-SESSION-ID/history
+Authorization: Bearer demo-alice
+
+### List allowlisted tools
+GET http://localhost:8000/api/v1/tools
+
+### Invoke a tool directly
+POST http://localhost:8000/api/v1/tools/invoke
+Content-Type: application/json
+Authorization: Bearer demo-bob
+
+{"tool": "check_return_eligibility", "arguments": {"order_id": "ORD-1004"}}
+
+### Authorization check — Bob cannot read Alice's order (success=false)
+POST http://localhost:8000/api/v1/tools/invoke
+Content-Type: application/json
+Authorization: Bearer demo-bob
+
+{"tool": "lookup_order", "arguments": {"order_id": "ORD-1001"}}

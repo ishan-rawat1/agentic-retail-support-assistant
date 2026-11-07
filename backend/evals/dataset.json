@@ -1,0 +1,167 @@
+{
+  "description": "Evaluation dataset for the Agentic Retail Support Assistant. Each case runs one or more chat turns in a fresh session and asserts routing, retrieval, tool usage, and answer quality.",
+  "cases": [
+    {
+      "id": "DIR-01", "category": "direct", "customer_token": "demo-alice",
+      "turns": [{"query": "Hi there!", "expect": {"route": "direct", "no_tools": true, "no_sources": true, "answer_contains_any": ["help", "assist"]}}]
+    },
+    {
+      "id": "DIR-02", "category": "direct", "customer_token": "demo-bob",
+      "turns": [{"query": "Thanks, that's all!", "expect": {"route": "direct", "no_tools": true, "answer_contains_any": ["welcome", "anything else"]}}]
+    },
+    {
+      "id": "DIR-03", "category": "direct", "customer_token": "demo-carol",
+      "turns": [{"query": "What can you do?", "expect": {"route": "direct", "no_tools": true, "answer_contains_any": ["order", "return"]}}]
+    },
+    {
+      "id": "RAG-01", "category": "shipping_rag", "customer_token": "demo-alice",
+      "turns": [{"query": "How long does standard shipping take?", "expect": {"route": "rag", "retrieval_docs": ["shipping-policy"], "answer_contains_any": ["5–7 business days", "5-7 business days"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-02", "category": "shipping_rag", "customer_token": "demo-bob",
+      "turns": [{"query": "Do you ship internationally?", "expect": {"route": "rag", "retrieval_docs": ["shipping-policy", "faq"], "answer_contains_any": ["50 US states", "do **not** ship internationally", "not ship internationally", "only within"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-03", "category": "shipping_rag", "customer_token": "demo-carol",
+      "turns": [{"query": "Is shipping free over $50?", "expect": {"route": "rag", "retrieval_docs": ["shipping-policy"], "answer_contains_any": ["free", "$50"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-04", "category": "returns_rag", "customer_token": "demo-alice",
+      "turns": [{"query": "What is your return policy?", "expect": {"route": "rag", "retrieval_docs": ["returns-policy"], "answer_contains_any": ["30 days"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-05", "category": "returns_rag", "customer_token": "demo-bob",
+      "turns": [{"query": "What's the return policy for electronics?", "expect": {"route": "rag", "retrieval_docs": ["returns-policy"], "answer_contains_any": ["15 days", "15-day"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-06", "category": "returns_rag", "customer_token": "demo-carol",
+      "turns": [{"query": "How long do refunds take to process?", "expect": {"route": "rag", "retrieval_docs": ["returns-policy", "faq"], "answer_contains_any": ["5–7 business days", "5-7 business days"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-07", "category": "product_rag", "customer_token": "demo-alice",
+      "turns": [{"query": "Do the Aurora headphones have noise cancellation?", "expect": {"route": "rag", "retrieval_docs": ["product-catalog"], "answer_contains_any": ["noise cancellation", "ANC"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-08", "category": "product_rag", "customer_token": "demo-bob",
+      "turns": [{"query": "How long is the battery life on the Aurora wireless headphones?", "expect": {"route": "rag", "retrieval_docs": ["product-catalog"], "answer_contains_any": ["40-hour", "40 hour", "40 hours"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-09", "category": "warranty_rag", "customer_token": "demo-carol",
+      "turns": [{"query": "What warranty comes with the standing desk?", "expect": {"route": "rag", "retrieval_docs": ["warranty-policy", "product-catalog"], "answer_contains_any": ["5-year", "5 year"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-10", "category": "payments_rag", "customer_token": "demo-alice",
+      "turns": [{"query": "What payment methods do you accept?", "expect": {"route": "rag", "retrieval_docs": ["payments-and-cancellations"], "answer_contains_any": ["PayPal", "Visa"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-11", "category": "payments_rag", "customer_token": "demo-bob",
+      "turns": [{"query": "What's the policy if I want to cancel an order before it ships?", "expect": {"route": "rag", "retrieval_docs": ["payments-and-cancellations"], "answer_contains_any": ["before they ship", "processing", "free of charge"], "grounded": true}}]
+    },
+    {
+      "id": "RAG-12", "category": "faq_rag", "customer_token": "demo-carol",
+      "turns": [{"query": "What's your policy if I received the wrong item?", "expect": {"route": "rag", "retrieval_docs": ["faq"], "answer_contains_any": ["48 hours", "wrong item"], "grounded": true}}]
+    },
+    {
+      "id": "TOOL-01", "category": "order_lookup", "customer_token": "demo-alice",
+      "turns": [{"query": "Where is my order ORD-1001?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1001"}}], "tool_success": true, "answer_contains_all": ["shipped", "TRK-84512093"]}}]
+    },
+    {
+      "id": "TOOL-02", "category": "order_lookup", "customer_token": "demo-alice",
+      "turns": [{"query": "What's the status of order ORD-1002?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1002"}}], "tool_success": true, "answer_contains_any": ["delivered"]}}]
+    },
+    {
+      "id": "TOOL-03", "category": "order_lookup", "customer_token": "demo-bob",
+      "turns": [{"query": "Where is my order ORD-1005?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1005"}}], "tool_success": true, "answer_contains_any": ["processing"]}}]
+    },
+    {
+      "id": "TOOL-04", "category": "order_lookup", "customer_token": "demo-carol",
+      "turns": [{"query": "What happened to my order ORD-1007?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1007"}}], "tool_success": true, "answer_contains_any": ["cancelled"]}}]
+    },
+    {
+      "id": "TOOL-05", "category": "product_details", "customer_token": "demo-alice",
+      "turns": [{"query": "Tell me about product PROD-101", "expect": {"route": "tool", "tools": [{"name": "get_product_details", "args": {"product_id": "PROD-101"}}], "tool_success": true, "answer_contains_all": ["Aurora", "129.99"]}}]
+    },
+    {
+      "id": "TOOL-06", "category": "product_details", "customer_token": "demo-bob",
+      "turns": [{"query": "Is PROD-103 in stock and how much does it cost?", "expect": {"route": "tool", "tools": [{"name": "get_product_details", "args": {"product_id": "PROD-103"}}], "tool_success": true, "answer_contains_all": ["449"]}}]
+    },
+    {
+      "id": "RET-01", "category": "return_eligibility", "customer_token": "demo-alice",
+      "turns": [{"query": "Can I return my order ORD-1002?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1002"}}], "tool_success": true, "answer_contains_any": ["eligible"], "answer_not_contains": ["not eligible"]}}]
+    },
+    {
+      "id": "RET-02", "category": "return_eligibility", "customer_token": "demo-alice",
+      "turns": [{"query": "I'd like to return order ORD-1003", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1003"}}], "tool_success": true, "answer_contains_any": ["expired", "not eligible"]}}]
+    },
+    {
+      "id": "RET-03", "category": "return_eligibility", "customer_token": "demo-bob",
+      "turns": [{"query": "Can I return anything from order ORD-1004?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1004"}}], "tool_success": true, "answer_contains_all": ["eligible", "Gift cards"]}}]
+    },
+    {
+      "id": "RET-04", "category": "return_eligibility", "customer_token": "demo-carol",
+      "turns": [{"query": "Can I return my order ORD-1006?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1006"}}], "tool_success": true, "answer_contains_any": ["Final sale", "final sale", "expired"]}}]
+    },
+    {
+      "id": "ERR-01", "category": "invalid_order", "customer_token": "demo-alice",
+      "turns": [{"query": "Where is my order ORD-9999?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-9999"}}], "tool_success": false, "answer_contains_any": ["couldn't", "No order"], "answer_not_contains": ["shipped", "delivered on"]}}]
+    },
+    {
+      "id": "ERR-02", "category": "invalid_order", "customer_token": "demo-bob",
+      "turns": [{"query": "Where is my order?", "expect": {"route": "tool", "no_tools": true, "answer_contains_any": ["order number", "ORD-1234"]}}]
+    },
+    {
+      "id": "ERR-03", "category": "invalid_order", "customer_token": "demo-carol",
+      "turns": [{"query": "Can you check product PROD-999 for me?", "expect": {"route": "tool", "tools": [{"name": "get_product_details", "args": {"product_id": "PROD-999"}}], "tool_success": false, "answer_contains_any": ["couldn't", "No product"]}}]
+    },
+    {
+      "id": "MT-01", "category": "multi_turn", "customer_token": "demo-alice",
+      "turns": [
+        {"query": "Where is my order ORD-1002?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1002"}}], "tool_success": true}},
+        {"query": "Can I return it?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1002"}}], "tool_success": true, "answer_contains_any": ["eligible"]}}
+      ]
+    },
+    {
+      "id": "MT-02", "category": "multi_turn", "customer_token": "demo-alice",
+      "turns": [
+        {"query": "Where is my order ORD-1001?", "expect": {"route": "tool", "tool_success": true}},
+        {"query": "Can I return it?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1001"}}], "tool_success": true, "answer_contains_any": ["after delivery", "in transit"]}}
+      ]
+    },
+    {
+      "id": "MT-03", "category": "multi_turn", "customer_token": "demo-bob",
+      "turns": [
+        {"query": "Hi!", "expect": {"route": "direct"}},
+        {"query": "What's the status of order ORD-1005?", "expect": {"route": "tool", "tool_success": true, "answer_contains_any": ["processing"]}},
+        {"query": "What's your cancellation policy?", "expect": {"route": "rag", "retrieval_docs": ["payments-and-cancellations"], "answer_contains_any": ["before they ship", "cancel"]}}
+      ]
+    },
+    {
+      "id": "MULTI-01", "category": "multi_tool", "customer_token": "demo-bob",
+      "turns": [{"query": "What was in order ORD-1004 and can I return it?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1004"}}, {"name": "check_return_eligibility", "args": {"order_id": "ORD-1004"}}], "tools_exact_order": true, "tool_success": true}}]
+    },
+    {
+      "id": "MULTI-02", "category": "multi_tool", "customer_token": "demo-alice",
+      "turns": [{"query": "Where is order ORD-1003 and am I able to get a refund for it?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1003"}}, {"name": "check_return_eligibility", "args": {"order_id": "ORD-1003"}}], "tool_success": true, "answer_contains_any": ["expired", "not eligible"]}}]
+    },
+    {
+      "id": "CTX-01", "category": "insufficient_context", "customer_token": "demo-alice",
+      "turns": [{"query": "What is your policy on quantum teleportation of pets?", "expect": {"route": "rag", "uncertainty": true, "no_sources": true, "answer_contains_any": ["couldn't find", "don't want to guess"]}}]
+    },
+    {
+      "id": "CTX-02", "category": "insufficient_context", "customer_token": "demo-bob",
+      "turns": [{"query": "Do you sell motorcycles with rocket boosters?", "expect": {"route": "rag", "uncertainty": true, "answer_contains_any": ["couldn't find", "don't want to guess"]}}]
+    },
+    {
+      "id": "AUTH-01", "category": "unauthorized_access", "customer_token": "demo-bob",
+      "turns": [{"query": "Where is my order ORD-1001?", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1001"}}], "tool_success": false, "answer_not_contains": ["TRK-84512093", "Aurora"]}}]
+    },
+    {
+      "id": "AUTH-02", "category": "unauthorized_access", "customer_token": "demo-alice",
+      "turns": [{"query": "Can I return order ORD-1004?", "expect": {"route": "tool", "tools": [{"name": "check_return_eligibility", "args": {"order_id": "ORD-1004"}}], "tool_success": false, "answer_not_contains": ["Gift Card", "headphones"]}}]
+    },
+    {
+      "id": "AUTH-03", "category": "unauthorized_access", "customer_token": "demo-carol",
+      "turns": [{"query": "Show me order ORD-1002", "expect": {"route": "tool", "tools": [{"name": "lookup_order", "args": {"order_id": "ORD-1002"}}], "tool_success": false, "answer_not_contains": ["TrailBlaze"]}}]
+    }
+  ]
+}

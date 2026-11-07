@@ -1,0 +1,1487 @@
+{
+  "generated_at": "2026-11-07T21:00:56.519850+00:00",
+  "config": {
+    "prompt_version": "v2",
+    "top_k": 4,
+    "chunk_size": 400,
+    "chunk_overlap": 60,
+    "llm_provider": "mock",
+    "judge": false,
+    "ingest_stats": {
+      "documents": 6,
+      "chunks": 43,
+      "chunk_size": 400,
+      "chunk_overlap": 60,
+      "vector_count": 43,
+      "embedding_provider": "local",
+      "vector_backend": "local"
+    }
+  },
+  "aggregates": {
+    "cases_total": 38,
+    "cases_passed": 32,
+    "turns_total": 42,
+    "turns_passed": 36,
+    "routing_accuracy": 1.0,
+    "tool_selection_accuracy": 1.0,
+    "tool_args_accuracy": 1.0,
+    "tool_outcome_accuracy": 1.0,
+    "recall_at_k": 1.0,
+    "hit_rate_at_k": 1.0,
+    "mrr": 0.8846,
+    "groundedness_mean": 0.7029,
+    "citation_rate": 1.0,
+    "uncertainty_handling": 0.5
+  },
+  "cases": [
+    {
+      "id": "DIR-01",
+      "category": "direct",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Hi there!",
+          "route": "direct",
+          "answer": "Hello! I'm your retail support assistant. I can track orders, check return eligibility, and answer product or policy questions. How can I help today?",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "no_tools": true,
+              "no_sources": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIR-02",
+      "category": "direct",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Thanks, that's all!",
+          "route": "direct",
+          "answer": "You're very welcome! Is there anything else I can help you with?",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "no_tools": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "DIR-03",
+      "category": "direct",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What can you do?",
+          "route": "direct",
+          "answer": "I can help you check order status and tracking, review return eligibility for your orders, and answer questions about our products, shipping, returns, warranty, and payment policies. What can I do for you?",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "no_tools": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-01",
+      "category": "shipping_rag",
+      "passed": false,
+      "turns": [
+        {
+          "query": "How long does standard shipping take?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: warranty-policy.md, chunk 1, score 0.290)\n## Coverage by category\n\n(source: shipping-policy.md, chunk 0, score 0.261)\n# Shipping & Delivery Policy\n\nSources: [Warranty Policy] [Shipping & Delivery Policy]",
+          "sources": [
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2905
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.261
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.2541
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.2413
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": false,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 0.5,
+              "groundedness": 0.47619047619047616
+            },
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-02",
+      "category": "shipping_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Do you ship internationally?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: shipping-policy.md, chunk 3, score 0.334)\n## Shipping destinations\n\nWe currently ship to all 50 US states. We do **not** ship internationally or to\nPO boxes for items over 20 lb (such as standing desks).\n\n(source: faq.md, chunk 1, score 0.284)\n## Can I change my shipping address after ordering?\n\nYes, while the order status is still \"processing\". Contact support as soon as\npossible. Once an order has shipped the address cannot be changed, but you can\ncontact the carrier to request a hold at a pickup location.\n\n## Do you ship internationally?\n\nNo. We currently ship only within the 50 US states.\n\nSources: [Shipping & Delivery Policy] [Frequently Asked Questions]",
+          "sources": [
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.3335
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.2836
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.1819
+            },
+            {
+              "doc_id": "payments-and-cancellations",
+              "score": 0.1626
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.8405797101449275
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-03",
+      "category": "shipping_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Is shipping free over $50?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: shipping-policy.md, chunk 2, score 0.441)\n## Free shipping\n\nStandard shipping is **free for all orders over $50** before tax. Express and\novernight shipping are never free, including for orders over $50.\n\n## Tracking\n\nA tracking number is emailed as soon as your order ships. You can also ask the\nsupport assistant \"Where is my order?\" with your order number (for example,\nORD-1001) to get live status, carrier, and estimated delivery date.\n\n(source: shipping-policy.md, chunk 0, score 0.415)\n# Shipping & Delivery Policy\n\nSources: [Shipping & Delivery Policy]",
+          "sources": [
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.4407
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.4152
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.2768
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.2475
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.819672131147541
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-04",
+      "category": "returns_rag",
+      "passed": false,
+      "turns": [
+        {
+          "query": "What is your return policy?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: returns-policy.md, chunk 0, score 0.568)\n# Returns & Refunds Policy\n\n(source: returns-policy.md, chunk 1, score 0.523)\n## Return windows\n\nSources: [Returns & Refunds Policy]",
+          "sources": [
+            {
+              "doc_id": "returns-policy",
+              "score": 0.5684
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.5225
+            },
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2446
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.2336
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": false,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.42105263157894735
+            },
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-05",
+      "category": "returns_rag",
+      "passed": false,
+      "turns": [
+        {
+          "query": "What's the return policy for electronics?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: returns-policy.md, chunk 0, score 0.344)\n# Returns & Refunds Policy\n\n(source: returns-policy.md, chunk 1, score 0.316)\n## Return windows\n\nSources: [Returns & Refunds Policy]",
+          "sources": [
+            {
+              "doc_id": "returns-policy",
+              "score": 0.344
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.3162
+            },
+            {
+              "doc_id": "product-catalog",
+              "score": 0.225
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.2061
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": false,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.42105263157894735
+            },
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-06",
+      "category": "returns_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "How long do refunds take to process?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: warranty-policy.md, chunk 1, score 0.290)\n## Coverage by category\n\n(source: faq.md, chunk 2, score 0.276)\n## How long do refunds take?\n\nRefunds are issued to your original payment method within **5–7 business days**\nafter the warehouse receives and inspects your return.\n\n## What if I received the wrong item?\n\nContact support within 48 hours. We ship the correct item immediately with free\nexpress shipping and email you a prepaid label for the incorrect one. You are\nnever charged twice.\n\nSources: [Warranty Policy] [Frequently Asked Questions]",
+          "sources": [
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2905
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.2763
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.261
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.1914
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 0.5,
+              "groundedness": 0.8070175438596491
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-07",
+      "category": "product_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Do the Aurora headphones have noise cancellation?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: product-catalog.md, chunk 1, score 0.295)\n## Aurora Wireless Headphones (PROD-101) — $129.99\n\n(source: warranty-policy.md, chunk 2, score 0.211)\n- **Electronics** (Aurora Wireless Headphones, LumenGlow Smart Lamp): **1-year\n  limited warranty** covering manufacturing defects in materials and workmanship.\n- **Appliances** (EverBrew Coffee Maker): **2-year warranty** covering motors,\n  heating elements, and electronic controls.\n- **Furniture** (NimbusDesk Standing Desk): **5-year warranty on the frame** and\n\nSources: [Product Catalog] [Warranty Policy]",
+          "sources": [
+            {
+              "doc_id": "product-catalog",
+              "score": 0.2952
+            },
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2106
+            },
+            {
+              "doc_id": "product-catalog",
+              "score": 0.2021
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.1542
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.7962962962962963
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-08",
+      "category": "product_rag",
+      "passed": false,
+      "turns": [
+        {
+          "query": "How long is the battery life on the Aurora wireless headphones?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: product-catalog.md, chunk 1, score 0.441)\n## Aurora Wireless Headphones (PROD-101) — $129.99\n\n(source: warranty-policy.md, chunk 2, score 0.218)\n- **Electronics** (Aurora Wireless Headphones, LumenGlow Smart Lamp): **1-year\n  limited warranty** covering manufacturing defects in materials and workmanship.\n- **Appliances** (EverBrew Coffee Maker): **2-year warranty** covering motors,\n  heating elements, and electronic controls.\n- **Furniture** (NimbusDesk Standing Desk): **5-year warranty on the frame** and\n\nSources: [Product Catalog] [Warranty Policy]",
+          "sources": [
+            {
+              "doc_id": "product-catalog",
+              "score": 0.4406
+            },
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2177
+            },
+            {
+              "doc_id": "product-catalog",
+              "score": 0.1829
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": false,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.7962962962962963
+            },
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-09",
+      "category": "warranty_rag",
+      "passed": false,
+      "turns": [
+        {
+          "query": "What warranty comes with the standing desk?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: warranty-policy.md, chunk 0, score 0.356)\n# Warranty Policy\n\n(source: product-catalog.md, chunk 4, score 0.347)\n## NimbusDesk Standing Desk (PROD-103) — $449.00\n\nSources: [Warranty Policy] [Product Catalog]",
+          "sources": [
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.3565
+            },
+            {
+              "doc_id": "product-catalog",
+              "score": 0.347
+            },
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.2734
+            },
+            {
+              "doc_id": "product-catalog",
+              "score": 0.2502
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": false,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.5
+            },
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-10",
+      "category": "payments_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What payment methods do you accept?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: payments-and-cancellations.md, chunk 0, score 0.387)\n# Payments & Cancellations Policy\n\n## Accepted payment methods\n\nWe accept Visa, Mastercard, American Express, Discover, PayPal, Apple Pay,\nGoogle Pay, and our own gift cards. Up to two payment methods can be combined\nper order (for example, a gift card plus a credit card).\n\n(source: payments-and-cancellations.md, chunk 1, score 0.304)\n## When you are charged\n\nYour payment method is **authorized at checkout and charged when the order\nships**. Gift cards are charged immediately at checkout.\n\nSources: [Payments & Cancellations Policy]",
+          "sources": [
+            {
+              "doc_id": "payments-and-cancellations",
+              "score": 0.387
+            },
+            {
+              "doc_id": "payments-and-cancellations",
+              "score": 0.3044
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.2197
+            },
+            {
+              "doc_id": "faq",
+              "score": 0.213
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.8166666666666667
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-11",
+      "category": "payments_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What's the policy if I want to cancel an order before it ships?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: payments-and-cancellations.md, chunk 2, score 0.286)\n## Cancelling an order\n\nOrders can be cancelled free of charge **any time before they ship** — while the\norder status is \"processing\". Once an order has shipped it can no longer be\ncancelled, but you can return it after delivery under the Returns & Refunds\nPolicy. To cancel, open **Orders** and choose \"Cancel order\", or contact support\nwith your order number.\n\n(source: shipping-policy.md, chunk 2, score 0.195)\n## Free shipping\n\nStandard shipping is **free for all orders over $50** before tax. Express and\novernight shipping are never free, including for orders over $50.\n\n## Tracking\n\nA tracking number is emailed as soon as your order ships. You can also ask the\nsupport assistant \"Where is my order?\" with your order number (for example,\nORD-1001) to get live status, carrier, and estimated delivery date.\n\nSources: [Payments & Cancellations Policy] [Shipping & Delivery Policy]",
+          "sources": [
+            {
+              "doc_id": "payments-and-cancellations",
+              "score": 0.2863
+            },
+            {
+              "doc_id": "shipping-policy",
+              "score": 0.1948
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.8910891089108911
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RAG-12",
+      "category": "faq_rag",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What's your policy if I received the wrong item?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: faq.md, chunk 2, score 0.223)\n## How long do refunds take?\n\nRefunds are issued to your original payment method within **5–7 business days**\nafter the warehouse receives and inspects your return.\n\n## What if I received the wrong item?\n\nContact support within 48 hours. We ship the correct item immediately with free\nexpress shipping and email you a prepaid label for the incorrect one. You are\nnever charged twice.\n\n(source: warranty-policy.md, chunk 4, score 0.198)\n## What is not covered\n\nNormal wear and tear, accidental damage, water damage to non-waterproof products,\nunauthorized repairs or modifications, and damage from misuse are not covered.\n\nSources: [Frequently Asked Questions] [Warranty Policy]",
+          "sources": [
+            {
+              "doc_id": "faq",
+              "score": 0.2226
+            },
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.1985
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.1581
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true,
+              "citation_present": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 1.0,
+              "groundedness": 0.8493150684931506
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-01",
+      "category": "order_lookup",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-1001?",
+          "route": "tool",
+          "answer": "Your order ORD-1001 is currently **shipped**. Tracking number TRK-84512093 via UPS. Estimated delivery: 2026-11-10. Items: Aurora Wireless Headphones (x1), LumenGlow Smart Lamp (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1001"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_all": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-02",
+      "category": "order_lookup",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What's the status of order ORD-1002?",
+          "route": "tool",
+          "answer": "Your order ORD-1002 is currently **delivered**. Tracking number TRK-77120455 via FedEx. It was delivered on 2026-10-28. Items: TrailBlaze Running Shoes (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1002"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-03",
+      "category": "order_lookup",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-1005?",
+          "route": "tool",
+          "answer": "Your order ORD-1005 is currently **processing**. Items: NimbusDesk Standing Desk (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1005"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-04",
+      "category": "order_lookup",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What happened to my order ORD-1007?",
+          "route": "tool",
+          "answer": "Your order ORD-1007 is currently **cancelled**. Items: SummitPack 45L Hiking Backpack (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1007"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-05",
+      "category": "product_details",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Tell me about product PROD-101",
+          "route": "tool",
+          "answer": "Aurora Wireless Headphones (PROD-101) — $129.99, in stock. Over-ear Bluetooth 5.3 headphones with active noise cancellation and 40-hour battery life. Key specs — battery life: 40 hours; bluetooth: 5.3; weight: 254 g; noise cancellation: Active (ANC).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "get_product_details",
+              "arguments": {
+                "product_id": "PROD-101"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_all": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "TOOL-06",
+      "category": "product_details",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Is PROD-103 in stock and how much does it cost?",
+          "route": "tool",
+          "answer": "NimbusDesk Standing Desk (PROD-103) — $449.00, in stock. Electric sit-stand desk with dual motors, 48x30 inch bamboo top, memory presets. Key specs — height range: 28-48 in; max load: 120 kg; surface: bamboo; warranty: 5 years frame, 2 years electronics.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "get_product_details",
+              "arguments": {
+                "product_id": "PROD-103"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_all": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RET-01",
+      "category": "return_eligibility",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Can I return my order ORD-1002?",
+          "route": "tool",
+          "answer": "Return check for order ORD-1002 (delivered 2026-10-28):\n- TrailBlaze Running Shoes: eligible for return — Within the 30-day return window for footwear (delivered 10 days ago; 20 days remaining).\nRefunds go to the original payment method within 5-7 business days after the warehouse receives the item.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1002"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true,
+              "answer_not_contains": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RET-02",
+      "category": "return_eligibility",
+      "passed": true,
+      "turns": [
+        {
+          "query": "I'd like to return order ORD-1003",
+          "route": "tool",
+          "answer": "Return check for order ORD-1003 (delivered 2026-09-28):\n- EverBrew Coffee Maker: not eligible — The 30-day return window for appliances has expired (delivered 40 days ago).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1003"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RET-03",
+      "category": "return_eligibility",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Can I return anything from order ORD-1004?",
+          "route": "tool",
+          "answer": "Return check for order ORD-1004 (delivered 2026-11-02):\n- Aurora Wireless Headphones: eligible for return — Within the 15-day return window for electronics (delivered 5 days ago; 10 days remaining).\n- Retail Gift Card $50: not eligible — Gift cards are non-returnable and non-refundable per policy.\nRefunds go to the original payment method within 5-7 business days after the warehouse receives the item.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1004"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_all": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "RET-04",
+      "category": "return_eligibility",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Can I return my order ORD-1006?",
+          "route": "tool",
+          "answer": "Return check for order ORD-1006 (delivered 2026-10-18):\n- LumenGlow Smart Lamp: not eligible — The 15-day return window for electronics has expired (delivered 20 days ago).\n- CozyCloud Weighted Blanket: not eligible — Final sale / clearance items are not eligible for return.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1006"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ERR-01",
+      "category": "invalid_order",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-9999?",
+          "route": "tool",
+          "answer": "I couldn't complete that lookup: No order ORD-9999 found for your account. Please double-check the id (order ids look like ORD-1234) and try again.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-9999"
+              },
+              "success": false
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true,
+              "answer_not_contains": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ERR-02",
+      "category": "invalid_order",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order?",
+          "route": "tool",
+          "answer": "Could you share your order number (it looks like ORD-1234)? I'll look it up right away.",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "no_tools": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "ERR-03",
+      "category": "invalid_order",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Can you check product PROD-999 for me?",
+          "route": "tool",
+          "answer": "I couldn't complete that lookup: No product found with id PROD-999. Please double-check the id (order ids look like ORD-1234) and try again.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "get_product_details",
+              "arguments": {
+                "product_id": "PROD-999"
+              },
+              "success": false
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "MT-01",
+      "category": "multi_turn",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-1002?",
+          "route": "tool",
+          "answer": "Your order ORD-1002 is currently **delivered**. Tracking number TRK-77120455 via FedEx. It was delivered on 2026-10-28. Items: TrailBlaze Running Shoes (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1002"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        },
+        {
+          "query": "Can I return it?",
+          "route": "tool",
+          "answer": "Return check for order ORD-1002 (delivered 2026-10-28):\n- TrailBlaze Running Shoes: eligible for return — Within the 30-day return window for footwear (delivered 10 days ago; 20 days remaining).\nRefunds go to the original payment method within 5-7 business days after the warehouse receives the item.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1002"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "MT-02",
+      "category": "multi_turn",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-1001?",
+          "route": "tool",
+          "answer": "Your order ORD-1001 is currently **shipped**. Tracking number TRK-84512093 via UPS. Estimated delivery: 2026-11-10. Items: Aurora Wireless Headphones (x1), LumenGlow Smart Lamp (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1001"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_success": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        },
+        {
+          "query": "Can I return it?",
+          "route": "tool",
+          "answer": "Order ORD-1001: Orders can only be returned after delivery. This order is still in transit; once it is delivered, the return window begins.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1001"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "MT-03",
+      "category": "multi_turn",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Hi!",
+          "route": "direct",
+          "answer": "Hello! I'm your retail support assistant. I can track orders, check return eligibility, and answer product or policy questions. How can I help today?",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        },
+        {
+          "query": "What's the status of order ORD-1005?",
+          "route": "tool",
+          "answer": "Your order ORD-1005 is currently **processing**. Items: NimbusDesk Standing Desk (x1).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1005"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        },
+        {
+          "query": "What's your cancellation policy?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: product-catalog.md, chunk 5, score 0.168)\nElectric sit-stand desk with dual motors, a 48 × 30 inch bamboo top, and a height\nrange of 28–48 inches. Four memory presets, anti-collision sensor, 120 kg load\ncapacity, and cable management tray included. Ships in two boxes; assembly takes\nabout 30 minutes. Cannot ship to PO boxes. Category: furniture — 5-year frame\nwarranty, 2-year electronics warranty.\n\n(source: payments-and-cancellations.md, chunk 0, score 0.168)\n# Payments & Cancellations Policy\n\n## Accepted payment methods\n\nWe accept Visa, Mastercard, American Express, Discover, PayPal, Apple Pay,\nGoogle Pay, and our own gift cards. Up to two payment methods can be combined\nper order (for example, a gift card plus a credit card).\n\nSources: [Product Catalog] [Payments & Cancellations Policy]",
+          "sources": [
+            {
+              "doc_id": "product-catalog",
+              "score": 0.1681
+            },
+            {
+              "doc_id": "payments-and-cancellations",
+              "score": 0.1676
+            },
+            {
+              "doc_id": "returns-policy",
+              "score": 0.1646
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "retrieval_hit": true,
+              "answer_contains_any": true
+            },
+            "metrics": {
+              "recall_at_k": 1.0,
+              "hit_at_k": 1.0,
+              "mrr": 0.5
+            },
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "MULTI-01",
+      "category": "multi_tool",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What was in order ORD-1004 and can I return it?",
+          "route": "tool",
+          "answer": "Your order ORD-1004 is currently **delivered**. Tracking number TRK-90331268 via UPS. It was delivered on 2026-11-02. Items: Aurora Wireless Headphones (x1), Retail Gift Card $50 (x2).\n\nReturn check for order ORD-1004 (delivered 2026-11-02):\n- Aurora Wireless Headphones: eligible for return — Within the 15-day return window for electronics (delivered 5 days ago; 10 days remaining).\n- Retail Gift Card $50: not eligible — Gift cards are non-returnable and non-refundable per policy.\nRefunds go to the original payment method within 5-7 business days after the warehouse receives the item.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1004"
+              },
+              "success": true
+            },
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1004"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "MULTI-02",
+      "category": "multi_tool",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is order ORD-1003 and am I able to get a refund for it?",
+          "route": "tool",
+          "answer": "Your order ORD-1003 is currently **delivered**. Tracking number TRK-66234871 via USPS. It was delivered on 2026-09-28. Items: EverBrew Coffee Maker (x1).\n\nReturn check for order ORD-1003 (delivered 2026-09-28):\n- EverBrew Coffee Maker: not eligible — The 30-day return window for appliances has expired (delivered 40 days ago).",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1003"
+              },
+              "success": true
+            },
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1003"
+              },
+              "success": true
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_contains_any": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CTX-01",
+      "category": "insufficient_context",
+      "passed": true,
+      "turns": [
+        {
+          "query": "What is your policy on quantum teleportation of pets?",
+          "route": "rag",
+          "answer": "I'm sorry — I couldn't find anything about that in our documentation, so I don't want to guess. Please reach out to support@example-retail.com and a human agent will help you within 1 business day.",
+          "sources": [],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "no_sources": true,
+              "answer_contains_any": true,
+              "uncertainty_acknowledged": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "CTX-02",
+      "category": "insufficient_context",
+      "passed": false,
+      "turns": [
+        {
+          "query": "Do you sell motorcycles with rocket boosters?",
+          "route": "rag",
+          "answer": "Here's what our documentation says:\n\n(source: warranty-policy.md, chunk 5, score 0.164)\n## Making a warranty claim\n\n1. Contact support with your order number and photos or a video of the defect.\n2. Claims are reviewed within **2 business days**.\n3. Approved claims receive a repair, an identical replacement, or store credit if\n   the product has been discontinued. Warranty service is free, including return\n   shipping for the defective unit.\n\nSources: [Warranty Policy]",
+          "sources": [
+            {
+              "doc_id": "warranty-policy",
+              "score": 0.1641
+            }
+          ],
+          "tools": [],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "answer_contains_any": false,
+              "uncertainty_acknowledged": false
+            },
+            "metrics": {},
+            "passed": false
+          }
+        }
+      ]
+    },
+    {
+      "id": "AUTH-01",
+      "category": "unauthorized_access",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Where is my order ORD-1001?",
+          "route": "tool",
+          "answer": "I couldn't complete that lookup: No order ORD-1001 found for your account. Please double-check the id (order ids look like ORD-1234) and try again.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1001"
+              },
+              "success": false
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_not_contains": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "AUTH-02",
+      "category": "unauthorized_access",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Can I return order ORD-1004?",
+          "route": "tool",
+          "answer": "I couldn't complete that lookup: No order ORD-1004 found for your account. Please double-check the id (order ids look like ORD-1234) and try again.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "check_return_eligibility",
+              "arguments": {
+                "order_id": "ORD-1004"
+              },
+              "success": false
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_not_contains": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    },
+    {
+      "id": "AUTH-03",
+      "category": "unauthorized_access",
+      "passed": true,
+      "turns": [
+        {
+          "query": "Show me order ORD-1002",
+          "route": "tool",
+          "answer": "I couldn't complete that lookup: No order ORD-1002 found for your account. Please double-check the id (order ids look like ORD-1234) and try again.",
+          "sources": [],
+          "tools": [
+            {
+              "name": "lookup_order",
+              "arguments": {
+                "order_id": "ORD-1002"
+              },
+              "success": false
+            }
+          ],
+          "evaluation": {
+            "checks": {
+              "route": true,
+              "tool_selection": true,
+              "tool_args": true,
+              "tool_success": true,
+              "answer_not_contains": true
+            },
+            "metrics": {},
+            "passed": true
+          }
+        }
+      ]
+    }
+  ]
+}
